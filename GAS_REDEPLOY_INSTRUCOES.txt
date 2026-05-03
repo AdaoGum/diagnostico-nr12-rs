@@ -1,0 +1,90 @@
+========================================
+INSTRUCOES PARA REDEPLOYAR O GOOGLE APPS SCRIPT
+========================================
+
+PROBLEMA: O front-end está enviando q1..q10 corretamente, mas o GAS em produção só lê q1..q3.
+
+SOLUCAO: Atualizar e redeployar o GAS.
+
+PASSO 1: Abrir o Google Apps Script
+- Vá para script.google.com
+- Abra o projeto que contém o `doPost` para a planilha de diagnóstico
+- Clique na aba "Editor" (ou "Code")
+
+PASSO 2: Atualizar o código do `doPost`
+- Substitua TODA a funcao `doPost` pela versão abaixo:
+
+---
+function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents || '{}');
+
+    // Log para depuração (vê no Execution Logs)
+    Logger.log('Payload recebido: ' + JSON.stringify(data));
+
+    // Campos fixos (ordem: Data, nome, email, cargo, municipio)
+    var row = [
+      new Date(),
+      data.nome || '',
+      data.email || '',
+      data.cargo || '',
+      data.municipio || ''
+    ];
+
+    // Detecta chaves q1..qN dinamicamente (ordena por número)
+    var qKeys = Object.keys(data).filter(function(k) {
+      return /^q\d+$/.test(k);
+    });
+    
+    qKeys.sort(function(a, b) {
+      return parseInt(a.slice(1), 10) - parseInt(b.slice(1), 10);
+    });
+
+    // Adiciona todas as respostas de perguntas na ordem correta
+    qKeys.forEach(function(k) {
+      row.push(data[k] || '');
+    });
+
+    sheet.appendRow(row);
+
+    return ContentService.createTextOutput(JSON.stringify({ result: 'success' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    Logger.log('doPost error: ' + err);
+    return ContentService.createTextOutput(JSON.stringify({ result: 'error', error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+---
+
+PASSO 3: Salvar o script
+- Clique em "Salvar" (Ctrl+S ou Cmd+S)
+- Se pedir para nomear o projeto, use um nome descritivo
+
+PASSO 4: Redeployar (criar nova versão do web app)
+- Clique no botão "Deployments" (ícone de engrenagem + foguete, ou "Manage deployments")
+- Clique em "New deployment"
+- Selecione o tipo "Web app"
+- Escolha "Execute as: [seu email]"
+- Escolha "Who has access: Anyone"
+- Clique em "Deploy"
+- Copie a NOVA URL que aparece (será similar à antiga)
+
+PASSO 5: (OPCIONAL) Atualizar a URL no index.html se mudou
+- Se a URL do web app mudou, atualize em index.html:
+  var scriptURL = 'https://script.google.com/macros/s/[NOVA_URL]/exec';
+- Se for a mesma URL, não precisa fazer nada
+
+PASSO 6: Testar
+- Volte à página do diagnóstico
+- Preencha o formulário completo (todas as 10 perguntas)
+- Clique em "Gerar Diagnóstico Preliminar"
+- Verifique na planilha se agora aparecem q1..q10
+
+DICA: Se quiser ver os logs do GAS para depuração:
+- Volte ao Apps Script
+- Clique em "Executions" (relógio)
+- Procure pela última execução e veja os logs com "Logger.log"
+
+========================================

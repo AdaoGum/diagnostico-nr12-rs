@@ -103,18 +103,121 @@
     <div id="page2" class="page">
         <div class="checklist-container">
             <div class="header-info">
-                <h2>Checklist de Adequacao - NR 12</h2>
-                <p><strong>Municipio:</strong> <span id="displayCity"></span></p>
-                <p><strong>Responsavel:</strong> <span id="displayUser"></span> (<span id="displayRole"></span>)</p>
+                <h2>Checklist de Adequação - NR 12</h2>
+                <p><strong>Município:</strong> <span id="displayCity"></span></p>
+                <p><strong>Responsável:</strong> <span id="displayUser"></span> (<span id="displayRole"></span>)</p>
             </div>
             <form id="checklistForm">
+
                 <div class="question-group">
-                    <h3>Eixo 1: Planejamento e Saneamento</h3>
-                    <div class="question"><label>1. O municipio possui Plano Municipal de Saneamento Basico atualizado?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Em elaboracao</option></select></div>
-                    <div class="question"><label>2. Existe Plano Diretor de Drenagem Urbana (PDDU)?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Em elaboracao</option></select></div>
-                    <div class="question"><label>3. O PDDU considera cenarios de mudancas climaticas?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Parcialmente</option></select></div>
+                    <h3>Eixo 1: Planejamento e Governança</h3>
+                    <div class="question">
+                        <label>1. O município possui cadastro técnico e mapeamento atualizado da infraestrutura de micro e macrodrenagem?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim, totalmente mapeado</option>
+                            <option>Mapeamento parcial</option>
+                            <option>Não possui</option>
+                            <option>Desconheço</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>2. O Plano Diretor de Drenagem Urbana (PDDU) estabelece metas progressivas de curto, médio e longo prazo para a melhoria dos serviços?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim</option>
+                            <option>Não</option>
+                            <option>O PDDU está obsoleto</option>
+                            <option>Não possui PDDU</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>3. Existe um órgão, autarquia ou secretaria municipal com equipe técnica dedicada exclusivamente à operação e gestão da drenagem?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim</option>
+                            <option>Não, é diluído em outras secretarias</option>
+                            <option>Não possui</option>
+                        </select>
+                    </div>
                 </div>
-                <button type="button" class="btn-finish" onclick="finishChecklist()">Gerar Diagnostico Preliminar</button>
+
+                <div class="question-group">
+                    <h3>Eixo 2: Gestão Econômico-Financeira</h3>
+                    <div class="question">
+                        <label>4. O município instituiu algum instrumento de cobrança (taxa ou tarifa) específico para garantir a sustentabilidade dos serviços de drenagem?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim</option>
+                            <option>Não, depende do caixa geral da prefeitura</option>
+                            <option>Em fase de estudo</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>5. Há separação contábil clara (contabilidade regulatória) das receitas e despesas relacionadas exclusivamente ao manejo de águas pluviais?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim</option>
+                            <option>Não</option>
+                            <option>Desconheço</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>6. Existe previsão orçamentária anual específica e suficiente para a manutenção preventiva (limpeza de galerias, desassoreamento de canais)?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim, suficiente</option>
+                            <option>Sim, mas insuficiente</option>
+                            <option>Não há orçamento específico</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h3>Eixo 3: Eventos Extremos e Resiliência Climática</h3>
+                    <div class="question">
+                        <label>7. O município possui mapeamento oficial de áreas de risco de inundações e alagamentos validado pela Defesa Civil?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim, atualizado</option>
+                            <option>Sim, desatualizado</option>
+                            <option>Não possui</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>8. Os parâmetros de projeto da rede de drenagem foram revisados nos últimos 5 anos para incorporar os novos cenários de mudanças climáticas?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim</option>
+                            <option>Não</option>
+                            <option>Em processo de revisão</option>
+                        </select>
+                    </div>
+                    <div class="question">
+                        <label>9. Há um Sistema de Alerta Antecipado (monitoramento hidrometeorológico) ativo e integrado com a população de áreas vulneráveis?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Sim, totalmente operacional</option>
+                            <option>Sim, mas com falhas</option>
+                            <option>Não possui</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <h3>Eixo 4: Infraestrutura Verde e Socio-hidrologia</h3>
+                    <div class="question">
+                        <label>10. A legislação municipal exige ou incentiva a implantação de Soluções Baseadas na Natureza (ex: jardins de chuva, bacias de detenção) em novos empreendimentos?</label>
+                        <select class="q-input">
+                            <option value="">Selecione...</option>
+                            <option>Exige para todos</option>
+                            <option>Incentiva com benefícios fiscais</option>
+                            <option>Não exige nem incentiva</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-finish" onclick="finishChecklist()">Gerar Diagnóstico Preliminar</button>
             </form>
         </div>
     </div>
