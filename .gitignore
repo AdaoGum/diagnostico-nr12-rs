@@ -1,0 +1,49 @@
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Environment and config files with sensitive data
+.env
+.env.local
+config.local.js
+secrets.js
+
+# Build outputs (if applicable in the future)
+dist/
+build/
+*.min.js
+*.min.css
+
+# Dependencies (if npm/node is added later)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python cache (if using local server)
+__pycache__/
+*.pyc
+*.pyo
+
+# Backup files
+*.bak
+*.backup
+
+# Google Apps Script credentials (if stored locally)
+credentials.json
+token.json

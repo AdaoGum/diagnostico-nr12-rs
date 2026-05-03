@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico NR 12 - Drenagem Urbana RS</title>
+    <!-- Bibliotecas Externas -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- PÁGINA 1: Contexto e Mapa -->
+    <div id="page1" class="page active">
+        <div class="left-panel">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Bras%C3%A3o_da_UFRGS.svg/200px-Bras%C3%A3o_da_UFRGS.svg.png" alt="Logo UFRGS" class="logo-ufrgs">
+            
+            <h1>Diagnóstico NR 12<br>Drenagem Urbana (RS)</h1>
+            <p>O Rio Grande do Sul enfrenta desafios históricos relacionados a eventos climáticos extremos e à gestão do sistema homem-água.</p>
+            <p>A Norma de Referência 12 da ANA estabelece diretrizes para a prestação dos serviços de drenagem e manejo de águas pluviais urbanas.</p>
+            <p><strong>Objetivo:</strong> Identificar desafios e fornecer um checklist guiado para ajudar os municípios na adequação normativa.</p>
+        </div>
+        
+        <div class="right-panel">
+            <div class="selector-container">
+                <select id="citySelect">
+                    <option value="">Selecione um município ou clique no mapa...</option>
+                </select>
+                <button onclick="triggerModalFromSelect()">Prosseguir</button>
+            </div>
+            
+            <div id="map-container">
+                <div id="loadingText">Carregando mapa do RS...</div>
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA 2: Checklist -->
+    <div id="page2" class="page">
+        <div class="checklist-container">
+            <div class="header-info">
+                <h2>Checklist de Adequação - NR 12</h2>
+                <p><strong>Município:</strong> <span id="displayCity"></span></p>
+                <p><strong>Responsável:</strong> <span id="displayUser"></span> (<span id="displayRole"></span>)</p>
+            </div>
+
+            <form id="checklistForm">
+                <!-- Eixo 1 -->
+                <div class="question-group">
+                    <h3>Eixo 1: Planejamento</h3>
+                    <div class="question"><label>1. Possui Plano Municipal de Saneamento?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
+                    <div class="question"><label>2. Possui Plano Diretor de Drenagem?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
+                    <div class="question"><label>3. O plano considera mudanças climáticas?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
+                </div>
+                <!-- ... Adicione as outras perguntas aqui seguindo o padrão ... -->
+                <button type="button" class="btn-finish" onclick="finishChecklist()">Finalizar e Enviar Dados</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="userModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modalCityName">Município</h2>
+            <input type="text" id="userName" placeholder="Nome Completo">
+            <input type="email" id="userEmail" placeholder="E-mail">
+            <input type="text" id="userRole" placeholder="Cargo">
+            <button onclick="goToPage2()">Iniciar Checklist</button>
+            <span class="modal-close" onclick="closeModal()">Cancelar</span>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
