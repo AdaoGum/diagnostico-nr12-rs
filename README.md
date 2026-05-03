@@ -1,5 +1,8 @@
 # Dashboard NR 12 - Drenagem Urbana RS
 
+> **Repositório**: [github.com/AdaoGum/diagnostico-nr12-rs](https://github.com/AdaoGum/diagnostico-nr12-rs)  
+> **Web App**: [Dashboard em Produção](https://script.google.com/macros/s/AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA/exec)
+
 ## 📋 Sobre o Projeto
 
 **Produto Técnico** desenvolvido como parte do **Mestrado Profissional em Engenharia Ambiental (ProfÁgua - UFRGS)**, focado na avaliação da adequação dos 497 municípios do Rio Grande do Sul à **Norma de Referência 12 (NR 12) da ANA**, que estabelece diretrizes sobre drenagem urbana e manejo de águas pluviais.
@@ -107,14 +110,25 @@ npx http-server -p 8000
 ## 🔧 Configuração do Backend
 
 ### Google Apps Script
-1. Acesse [Google Apps Script](https://script.google.com/)
-2. Crie um novo projeto vinculado à planilha Google Sheets
-3. Cole o código do backend (não incluído neste repositório)
-4. Deploy como **Web App** com permissões adequadas
-5. Copie a URL do deploy e atualize em `js/script.js`:
+
+O backend está configurado e hospedado no Google Apps Script.
+
+**URL do Web App**:
+```
+https://script.google.com/macros/s/AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA/exec
+```
+
+**Deployment ID**: `AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA`
+
+Para fazer alterações no backend:
+1. Acesse o [Google Apps Script](https://script.google.com/)
+2. Abra o projeto vinculado à planilha do projeto
+3. Faça as modificações necessárias
+4. Crie um novo deployment para atualizar a Web App
+5. Se a URL mudar, atualize em `js/script.js`:
 
 ```javascript
-const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA/exec';
 ```
 
 ---
@@ -162,3 +176,17 @@ Para dúvidas sobre o projeto ou colaborações:
 ---
 
 **Última atualização**: Maio de 2026
+
+# Inicializar repositório
+git init
+
+# Adicionar todos os arquivos
+git add .
+
+# Primeiro commit
+git commit -m "Initial commit: Dashboard NR 12 - Drenagem Urbana RS"
+
+# Conectar ao GitHub (se já tiver criado o repositório remoto)
+git remote add origin https://github.com/seu-usuario/projeto_mestrado.git
+git branch -M main
+git push -u origin main
