@@ -1,5 +1,5 @@
 let selectedCity = '';
-const scriptURL = 'SUA_URL_DO_GOOGLE_SCRIPT_AQUI';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA/exec';
 
 const chartDom = document.getElementById('map');
 const myChart = echarts.init(chartDom);
