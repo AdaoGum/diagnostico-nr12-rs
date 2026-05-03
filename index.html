@@ -4,31 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnóstico NR 12 - Drenagem Urbana RS</title>
-    <!-- Bibliotecas Externas -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; overflow-x: hidden; }
+
+        .page { display: none; min-height: 100vh; }
+        .page.active { display: flex; }
+
+        #page1 { flex-direction: row; }
+
+        .left-panel {
+            flex: 1; padding: 50px;
+            background: linear-gradient(135deg, #0056b3, #003d82);
+            color: white; display: flex; flex-direction: column;
+            justify-content: center; position: relative;
+        }
+        .logo-ufrgs {
+            position: absolute; top: 16px; left: 16px;
+            width: 100px;
+            height: auto;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: block;
+            z-index: 20;
+        }
+        .left-panel h1 { font-size: 2.5rem; margin-bottom: 20px; margin-top: 60px; }
+        .left-panel p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; color: #e0e0e0; }
+
+        .right-panel { flex: 1; display: flex; flex-direction: column; background-color: #ffffff; }
+        .selector-container {
+            padding: 20px; background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;
+            display: flex; gap: 10px; align-items: center; justify-content: center;
+        }
+        .selector-container select { padding: 10px; width: 60%; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
+        .selector-container button { padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        #map-container { flex: 1; position: relative; width: 100%; min-height: 500px; }
+        #map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #loadingText {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem; color: #666; font-weight: bold; z-index: 5;
+        }
+
+        #page2 { flex-direction: column; align-items: center; padding: 40px 20px; background-color: #f8f9fa; }
+        .checklist-container { width: 100%; max-width: 800px; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .header-info { background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #0056b3; }
+        .header-info h2 { color: #0056b3; }
+        .header-info p { margin-top: 5px; color: #555; }
+        .question-group { margin-bottom: 25px; }
+        .question-group h3 { font-size: 1.2rem; color: #444; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-bottom: 15px; }
+        .question { margin-bottom: 15px; }
+        .question label { display: block; font-weight: 500; margin-bottom: 5px; }
+        .question select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-finish { width: 100%; padding: 15px; background-color: #0056b3; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1rem; font-weight: bold; margin-top: 20px; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 100; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: white; padding: 30px; border-radius: 10px; width: 400px; text-align: center; }
+        .modal-content h2 { margin-bottom: 10px; color: #333; }
+        .modal-content p { margin-bottom: 15px; font-size: 0.9rem; color: #666; }
+        .modal-content input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+        .modal-content button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 1rem; cursor: pointer; font-weight: bold; }
+        .modal-close { margin-top: 10px; display: inline-block; color: #dc3545; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+    </style>
 </head>
 <body>
 
-    <!-- PÁGINA 1: Contexto e Mapa -->
+    <!-- PAGINA 1: Mapa -->
     <div id="page1" class="page active">
         <div class="left-panel">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Bras%C3%A3o_da_UFRGS.svg/200px-Bras%C3%A3o_da_UFRGS.svg.png" alt="Logo UFRGS" class="logo-ufrgs">
-            
-            <h1>Diagnóstico NR 12<br>Drenagem Urbana (RS)</h1>
-            <p>O Rio Grande do Sul enfrenta desafios históricos relacionados a eventos climáticos extremos e à gestão do sistema homem-água.</p>
-            <p>A Norma de Referência 12 da ANA estabelece diretrizes para a prestação dos serviços de drenagem e manejo de águas pluviais urbanas.</p>
-            <p><strong>Objetivo:</strong> Identificar desafios e fornecer um checklist guiado para ajudar os municípios na adequação normativa.</p>
+            <img src="assets/logo-ufrgs.png" alt="UFRGS logo" class="logo-ufrgs">
+            <h1>Diagnostico NR 12<br>Drenagem Urbana (RS)</h1>
+            <p>O Rio Grande do Sul enfrenta desafios historicos relacionados a eventos climaticos extremos e a gestao do sistema homem-agua.</p>
+            <p>A Norma de Referencia 12 da ANA estabelece diretrizes para a prestacao dos servicos de drenagem e manejo de aguas pluviais urbanas.</p>
+            <p><strong>Objetivo:</strong> Identificar desafios e fornecer um checklist guiado para ajudar os municipios na adequacao normativa.</p>
         </div>
-        
+
         <div class="right-panel">
             <div class="selector-container">
                 <select id="citySelect">
-                    <option value="">Selecione um município ou clique no mapa...</option>
+                    <option value="">Selecione um municipio ou clique no mapa...</option>
                 </select>
                 <button onclick="triggerModalFromSelect()">Prosseguir</button>
             </div>
-            
             <div id="map-container">
                 <div id="loadingText">Carregando mapa do RS...</div>
                 <div id="map"></div>
@@ -36,25 +99,22 @@
         </div>
     </div>
 
-    <!-- PÁGINA 2: Checklist -->
+    <!-- PAGINA 2: Checklist -->
     <div id="page2" class="page">
         <div class="checklist-container">
             <div class="header-info">
-                <h2>Checklist de Adequação - NR 12</h2>
-                <p><strong>Município:</strong> <span id="displayCity"></span></p>
-                <p><strong>Responsável:</strong> <span id="displayUser"></span> (<span id="displayRole"></span>)</p>
+                <h2>Checklist de Adequacao - NR 12</h2>
+                <p><strong>Municipio:</strong> <span id="displayCity"></span></p>
+                <p><strong>Responsavel:</strong> <span id="displayUser"></span> (<span id="displayRole"></span>)</p>
             </div>
-
             <form id="checklistForm">
-                <!-- Eixo 1 -->
                 <div class="question-group">
-                    <h3>Eixo 1: Planejamento</h3>
-                    <div class="question"><label>1. Possui Plano Municipal de Saneamento?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
-                    <div class="question"><label>2. Possui Plano Diretor de Drenagem?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
-                    <div class="question"><label>3. O plano considera mudanças climáticas?</label><select class="q-input"><option>Sim</option><option>Não</option></select></div>
+                    <h3>Eixo 1: Planejamento e Saneamento</h3>
+                    <div class="question"><label>1. O municipio possui Plano Municipal de Saneamento Basico atualizado?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Em elaboracao</option></select></div>
+                    <div class="question"><label>2. Existe Plano Diretor de Drenagem Urbana (PDDU)?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Em elaboracao</option></select></div>
+                    <div class="question"><label>3. O PDDU considera cenarios de mudancas climaticas?</label><select class="q-input"><option>Sim</option><option>Nao</option><option>Parcialmente</option></select></div>
                 </div>
-                <!-- ... Adicione as outras perguntas aqui seguindo o padrão ... -->
-                <button type="button" class="btn-finish" onclick="finishChecklist()">Finalizar e Enviar Dados</button>
+                <button type="button" class="btn-finish" onclick="finishChecklist()">Gerar Diagnostico Preliminar</button>
             </form>
         </div>
     </div>
@@ -62,15 +122,130 @@
     <!-- MODAL -->
     <div id="userModal" class="modal-overlay">
         <div class="modal-content">
-            <h2 id="modalCityName">Município</h2>
-            <input type="text" id="userName" placeholder="Nome Completo">
-            <input type="email" id="userEmail" placeholder="E-mail">
-            <input type="text" id="userRole" placeholder="Cargo">
+            <h2 id="modalCityName">Municipio</h2>
+            <p>Por favor, identifique-se para iniciar o diagnostico institucional.</p>
+            <input type="text" id="userName" placeholder="Seu Nome Completo">
+            <input type="email" id="userEmail" placeholder="Seu E-mail Profissional">
+            <input type="text" id="userRole" placeholder="Cargo/Funcao no Municipio">
             <button onclick="goToPage2()">Iniciar Checklist</button>
             <span class="modal-close" onclick="closeModal()">Cancelar</span>
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script>
+        var selectedCity = '';
+        var scriptURL = 'https://script.google.com/macros/s/AKfycbylnPGi8mc-98VcKeoNm5iqTxTLMl2JuRAWgmF3Kb4IEspzWdtYq6NFI5g-uoawyWUmAA/exec';
+
+        var chartDom = document.getElementById('map');
+        var myChart = echarts.init(chartDom);
+        var geoJsonUrl = 'https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-43-mun.json';
+
+        fetch(geoJsonUrl)
+            .then(function(response) { return response.json(); })
+            .then(function(geoJson) {
+                document.getElementById('loadingText').style.display = 'none';
+                echarts.registerMap('RS', geoJson);
+
+                var select = document.getElementById('citySelect');
+                geoJson.features.sort(function(a,b) {
+                    return a.properties.name.localeCompare(b.properties.name);
+                }).forEach(function(feature) {
+                    var option = document.createElement('option');
+                    option.value = feature.properties.name;
+                    option.innerText = feature.properties.name;
+                    select.appendChild(option);
+                });
+
+                myChart.setOption({
+                    tooltip: { trigger: 'item', formatter: '{b}' },
+                    series: [{
+                        type: 'map', map: 'RS', roam: true,
+                        itemStyle: { areaColor: '#cce5ff', borderColor: '#ffffff' },
+                        emphasis: { itemStyle: { areaColor: '#0056b3' }, label: { color: '#fff' } }
+                    }]
+                });
+                myChart.resize();
+
+                myChart.on('click', function(params) {
+                    openModal(params.name);
+                });
+            })
+            .catch(function(error) {
+                document.getElementById('loadingText').innerText = 'Erro ao carregar o mapa. Verifique a conexao.';
+            });
+
+        window.addEventListener('resize', function() { myChart.resize(); });
+
+        function triggerModalFromSelect() {
+            var val = document.getElementById('citySelect').value;
+            if (val) openModal(val);
+            else alert('Selecione um municipio na lista.');
+        }
+
+        function openModal(city) {
+            selectedCity = city;
+            document.getElementById('modalCityName').innerText = city;
+            document.getElementById('userModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').classList.remove('active');
+        }
+
+        function goToPage2() {
+            var name = document.getElementById('userName').value;
+            var role = document.getElementById('userRole').value;
+            if (!name || !role) {
+                alert('Preencha seu nome e cargo para continuar.');
+                return;
+            }
+            document.getElementById('displayCity').innerText = selectedCity;
+            document.getElementById('displayUser').innerText = name;
+            document.getElementById('displayRole').innerText = role;
+            closeModal();
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function finishChecklist() {
+            var btn = document.querySelector('.btn-finish');
+            btn.innerText = 'Enviando...';
+            btn.disabled = true;
+
+            // Chaves em minúsculo = igual ao que o GAS já esperava e funcionava
+            // Não enviar Data — o GAS adiciona automaticamente no servidor
+            var payload = {
+                nome:      document.getElementById('userName').value,
+                email:     document.getElementById('userEmail').value,
+                cargo:     document.getElementById('userRole').value,
+                municipio: selectedCity || document.getElementById('citySelect').value
+            };
+
+            // GAS espera q1, q2, q3...
+            var questions = document.querySelectorAll('.q-input');
+            questions.forEach(function(q, i) {
+                payload['q' + (i + 1)] = q.value;
+            });
+
+            console.log('Payload enviado:', payload);
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(payload)
+            })
+            .then(function() {
+                alert('Dados enviados com sucesso! Obrigado.');
+                location.reload();
+            })
+            .catch(function(e) {
+                console.error('Erro no envio:', e);
+                alert('Erro ao enviar os dados. Verifique a conexao.');
+                btn.disabled = false;
+                btn.innerText = 'Gerar Diagnostico Preliminar';
+            });
+        }
+    </script>
 </body>
 </html>
