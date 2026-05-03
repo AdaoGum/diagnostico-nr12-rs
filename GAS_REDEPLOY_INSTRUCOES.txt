@@ -2,10 +2,6 @@
 INSTRUCOES PARA REDEPLOYAR O GOOGLE APPS SCRIPT
 ========================================
 
-PROBLEMA: O front-end está enviando q1..q10 corretamente, mas o GAS em produção só lê q1..q3.
-
-SOLUCAO: Atualizar e redeployar o GAS.
-
 PASSO 1: Abrir o Google Apps Script
 - Vá para script.google.com
 - Abra o projeto que contém o `doPost` para a planilha de diagnóstico
