@@ -1,0 +1,26 @@
+function doPost(e) {
+  try {
+    // Dados da tabela
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    
+    // Organiza os dados para a linha (Data atual + campos do form)
+    // Importante: a ordem aqui deve ser a mesma das colunas da planilha
+    var row = [
+      new Date(), 
+      data.nome, 
+      data.email, 
+      data.cargo, 
+      data.municipio,
+      data.q1, data.q2, data.q3, data.q4, data.q5, data.q6, data.q7, data.q8, data.q9, data.q10 // Adicione q4, q5... conforme seu checklist
+    ];
+    
+    sheet.appendRow(row);
+    
+    return ContentService.createTextOutput(JSON.stringify({"result": "success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({"result": "error", "error": error}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
